@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal Semester 5</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+    margin:0;
+    color:#333;
+    font-family:Arial, sans-serif;
+
+    background-image:url("bg.jpeg");
+    background-repeat:repeat;
+    background-size:350px auto;
+    background-attachment:fixed;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+.navbar{
+    max-width:1200px;
+    margin:auto;
+    background:#fff;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 25px;
+    position:sticky;
+    top:0;
+    z-index:999;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.brand{
+    font-size:24px;
+    font-weight:bold;
+    color:#6b58b2;
+}
+
+.navbar ul{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    list-style:none;
+}
+
+.nav-item{
+    border-radius:8px;
+    transition:.3s;
+}
+
+.nav-item a{
+    display:block;
+    padding:10px 15px;
+    text-decoration:none;
+    color:#333;
+    font-weight:bold;
+}
+
+.nav-item:hover{
+    background:#ece7ff;
+}
+
+.nav-item:hover a{
+    color:#6b58b2;
+}
+
+.nav-item.active{
+    background:#6b58b2;
+    box-shadow:0 0 15px #6b58b2;
+}
+
+.nav-item.active a{
+    color:#fff;
+}
+
+@media(max-width:768px){
+
+    .navbar{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .navbar ul{
+        width:100%;
+        flex-wrap:wrap;
+        justify-content:center;
+    }
+
+}
+
+.hero{
+height:280px;
+background:#b8a5db;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+color:white;
+}
+
+.hero h1{
+font-size:50px;
+margin-bottom:10px;
+}
+
+.hero p{
+font-size:18px;
+}
+
+.container{
+max-width:1200px;
+margin:20px auto;
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:20px;
+}
+
+.card{
+background:#cdbbea;
+padding:20px;
+border:4px solid #ddd;
+}
+
+.card h2{
+background:#6b58b2;
+color:white;
+padding:15px 20px;
+border-radius:15px;
+margin-bottom:20px;
+}
+
+.widget{
+background:#cdbbea;
+padding:20px;
+border:4px solid #ddd;
+margin-bottom:20px;
+}
+
+.widget h3{
+background:#6b58b2;
+color:white;
+padding:12px;
+border-radius:10px;
+margin-bottom:10px;
+}
+
+.jadwal-menu{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+margin-bottom:20px;
+}
+
+.kelas-btn{
+border:none;
+background:#6b58b2;
+color:white;
+padding:12px 20px;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.active-btn{
+background:#ff78c8;
+}
+
+.print-btn{
+margin-left:auto;
+border:none;
+background:#222;
+color:white;
+padding:12px 20px;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.kelas-content{
+display:none;
+}
+
+.active-content{
+display:block;
+}
+
+.table-wrapper{
+overflow-x:auto;
+}
+
+.table-wrapper h3{
+margin:20px 0;
+color:#6b58b2;
+border-left:5px solid #6b58b2;
+padding-left:10px;
+}
+
+.schedule{
+width:100%;
+border-collapse:collapse;
+background:white;
+}
+
+.schedule th{
+background:#ff78c8;
+color:white;
+padding:12px;
+text-transform:uppercase;
+}
+
+.schedule td{
+border:1px solid #ddd;
+padding:10px;
+}
+
+.schedule tr:nth-child(even){
+background:#f8f8f8;
+}
+
+.schedule tr:hover{
+background:#ffe5f4;
+}
+
+:root{
+    --purple:#6b58b2;
+    --pink:#ff78c8;
+    --dark:#0f0f12;
+    --row:#3f3a3d;
+}
+
+/* TABEL */
+.download-list{
+    width:100%;
+    border-collapse:collapse;
+    overflow:hidden;
+}
+
+/* HEADER */
+.download-list thead th{
+    background:var(--pink);
+    color:#fff;
+    padding:14px 18px;
+    text-align:left;
+    font-size:20px;
+}
+
+/* BARIS GELAP-TERANG */
+.download-list tbody tr:nth-child(odd){
+    background:var(--row);
+}
+
+.download-list tbody tr:nth-child(even){
+    background:var(--dark);
+}
+
+/* EFEK HOVER */
+.download-list tbody tr:hover{
+    background:#5a4d53;
+}
+
+/* ISI TABEL */
+.download-list td{
+    padding:12px 18px;
+    font-size:18px;
+}
+
+/* LINK YANG TERSEDIA */
+.download-list a{
+    color:#ffffff;
+    text-decoration:none;
+    display:block;
+    font-weight:500;
+    transition:.3s;
+}
+
+/* SAAT MOUSE DIARAHKAN */
+.download-list a:hover{
+    color:var(--pink);
+    padding-left:8px;
+}
+
+/* MATERI BELUM ADA LINK */
+.download-list .disabled{
+    color:#b8b8b8;
+    cursor:not-allowed;
+}
+
+/* TANGGAL */
+.tanggal{
+    text-align:right;
+    color:#d6d6d6;
+    white-space:nowrap;
+    width:180px;
+}
+
+footer{
+max-width:1200px;
+margin:20px auto;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+}
+
+.footer-box{
+background:#cdbbea;
+padding:20px;
+border:4px solid #ddd;
+}
+
+.footer-box h3{
+background:#6b58b2;
+color:white;
+padding:12px;
+border-radius:10px;
+}
+
+@media(max-width:900px){
+
+.container{
+grid-template-columns:1fr;
+}
+
+.hero h1{
+font-size:34px;
+}
+
+.hero{
+    position:relative;
+    overflow:hidden;
+}
+
+.hero-character{
+    position:absolute;
+    right:0;
+    bottom:0;
+    width:320px;
+    max-width:40%;
+    height:auto;
+
+    -webkit-user-drag:none;
+    user-select:none;
+    pointer-events:none;
+}
+
+@media(max-width:900px){
+
+.hero-character{
+    display:none;
+}
+
+}
+
+.print-btn{
+width:100%;
+margin-left:0;
+}
+
+}
+
+@media print{
+
+.navbar,
+.hero,
+aside,
+footer,
+.jadwal-menu{
+display:none !important;
+}
+
+.container{
+display:block;
+}
+
+.card{
+border:none;
+background:white;
+padding:0;
+}
+
+body{
+background:white;
+}
+
+}
+</style>
+</head>
+<body>
+<section id="beranda">
+
+<nav class="navbar">
+
+    <div class="brand">
+        PORTAL SEMESTER 5
+    </div>
+
+    <ul>
+
+        <li class="nav-item">
+            <a href="beranda.html">
+                BERANDA
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="beranda.html#jadwal">
+                JADWAL PER KELAS
+            </a>
+        </li>
+
+        <li class="nav-item active">
+    <a href="materi.html">
+        LIST MATERI UNDUHAN (ACCORDION)
+    </a>
+</li>
+
+    </ul>
+
+</nav>
+
+<header class="hero">
+
+    <div class="hero-text">
+        <h1>Pusat Informasi Semester 5</h1>
+        <p>
+            Program Studi S1 Rekayasa Perangkat Lunak,
+            Tahun Ajaran Baru 2026/2027.
+        </p>
+    </div>
+
+    <img
+    src="anim.png"
+    class="hero-character"
+    alt="Anime Character"
+    draggable="false"
+    oncontextmenu="return false;"
+    ondragstart="return false;"
+    onselectstart="return false;">
+
+</header>
+
+<div class="container">
+
+<main>
+
+<section class="card">
+<section id="materi">
+
+<h2>List Materi Unduhan Semester 5</h2>
+
+<div class="jadwal-menu">
+
+<button class="kelas-btn active-btn"
+onclick="showClass('MMD',this)">
+Multimedia Dasar
+</button>
+
+<button class="kelas-btn"
+onclick="showClass('DW',this)">
+Desain Web (UI/UX)
+</button>
+
+<button class="kelas-btn"
+onclick="showClass('PMD',this)">
+Pemrograman Mobile Dasar
+</button>
+
+<button class="kelas-btn"
+onclick="showClass('AR',this)">
+Augmented Reality Dasar
+</button>
+
+<button class="kelas-btn"
+onclick="showClass('SP',this)">
+Secure Programming
+</button>
+
+</div>
+
+<div class="table-wrapper">
+
+<!-- MULTIMEDIA DASAR -->
+<div id="MMD" class="kelas-content active-content">
+<table class="download-list">
+<thead>
+<tr>
+<th colspan="2">
+Multimedia Dasar (Link Download Materi)
+</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Pertemuan 18 - Multimedia Dasar</td>
+<td class="tanggal">2026</td>
+</tr>
+
+<tr>
+<td>Pertemuan 17 - Multimedia Dasar</td>
+<td class="tanggal">2026</td>
+</tr>
+
+<tr>
+<td>Pertemuan 16 - Multimedia Dasar</td>
+<td class="tanggal">2026</td>
+</tr>
+
+<tr>
+<td>Pertemuan 15 - Multimedia Dasar</td>
+<td class="tanggal">2026</td>
+</tr>
+
+<tr>
+<td>Pertemuan 14 - Multimedia Dasar</td>
+<td class="tanggal">2026</td>
+</tr>
+
+<tr>
+<td>Pertemuan 13 - Multimedia Dasar</td>
+<td class="tanggal">2026</td>
+</tr>
+
+<tr>
+<td>Pertemuan 12 - Multimedia Dasar</td>
+<td class="tanggal">2026</td>
+</tr>
+
+<tr>
+<td>Pertemuan 11 - Multimedia Dasar</td>
+<td class="tanggal">2026</td>
+</tr>
+
+<tr>
+<td>Pertemuan 10 - Multimedia Dasar</td>
+<td class="tanggal">2026</td>
+</tr>
+
+<tr>
+<td>Pertemuan 9 - Multimedia Dasar</td>
+<td class="tanggal">2026</td>
+</tr>
+
+<tr>
+<td>Pertemuan 8 - Multimedia Dasar</td>
+<td class="tanggal">2026</td>
+</tr>
+
+<tr>
+<td>Pertemuan 7 - Multimedia Dasar</td>
+<td class="tanggal">2026</td>
+</tr>
+
+<tr>
+<td>Pertemuan 6 - Multimedia Dasar</td>
+<td class="tanggal">2026</td>
+</tr>
+
+<tr>
+<td>Pertemuan 5 - Multimedia Dasar</td>
+<td class="tanggal">2026</td>
+</tr>
+
+<tr>
+<td>Pertemuan 4 - Multimedia Dasar</td>
+<td class="tanggal">2026</td>
+</tr>
+
+<tr>
+<td>Pertemuan 3 - Multimedia Dasar</td>
+<td class="tanggal">2026</td>
+</tr>
+
+<tr>
+<td>Pertemuan 2 - Multimedia Dasar</td>
+<td class="tanggal">2026</td>
+</tr>
+
+<tr>
+<td><a href="#">Pertemuan 1 - Multimedia Dasar</a></td>
+<td class="tanggal">22 Juni 2026</td>
+</tr>
+</tbody>
+
+</table>
+</div>
+
+<!-- DESAIN WEB -->
+<div id="DW" class="kelas-content">
+<table class="download-list">
+<thead>
+<tr>
+<th colspan="2">
+Desain Web (UI/UX) (Link Download Materi)
+</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr><td>Pertemuan 18 - UI/UX</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 17 - UI/UX</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 16 - UI/UX</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 15 - UI/UX</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 14 - UI/UX</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 13 - UI/UX</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 12 - UI/UX</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 11 - UI/UX</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 10 - UI/UX</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 9 - UI/UX</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 8 - UI/UX</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 7 - UI/UX</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 6 - UI/UX</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 5 - UI/UX</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 4 - UI/UX</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 3 - UI/UX</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 2 - UI/UX</td><td class="tanggal">2026</td></tr>
+<tr><td><a href="#">Pertemuan 1 - UI/UX</a></td><td class="tanggal">2026</td></tr>
+
+</tbody>
+</table>
+</div>
+
+<!-- Pemrograman Mobile Dasar -->
+<div id="PMD" class="kelas-content">
+<table class="download-list">
+<thead>
+<tr>
+<th colspan="2">
+Pemrograman Mobile Dasar (Link Download Materi)
+</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr><td>Pertemuan 18 - Pemrograman Mobile Dasar</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 17 - Pemrograman Mobile Dasar</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 16 - Pemrograman Mobile Dasar</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 15 - Pemrograman Mobile Dasar</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 14 - Pemrograman Mobile Dasar</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 13 - Pemrograman Mobile Dasar</td><td class="tanggal">2026</td></tr>
+<tr><td>ertemuan 12 - Pemrograman Mobile Dasar</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 11 - Pemrograman Mobile Dasar</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 10 - Pemrograman Mobile Dasar</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 9 - Pemrograman Mobile Dasar</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 8 - Pemrograman Mobile Dasar</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 7 - Pemrograman Mobile Dasar</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 6 - Pemrograman Mobile Dasar</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 5 - Pemrograman Mobile Dasar</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 4 - Pemrograman Mobile Dasar</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 3 - Pemrograman Mobile Dasar</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 2 - Pemrograman Mobile Dasar</td><td class="tanggal">2026</td></tr>
+<tr><td><a href="#">Pertemuan 1 - Pemrograman Mobile Dasar</a></td><td class="tanggal">2026</td></tr>
+
+</tbody>
+</table>
+</div>
+
+<!-- Augmented Reality -->
+<div id="AR" class="kelas-content">
+<table class="download-list">
+<thead>
+<tr>
+<th colspan="2">
+Augmented Reality (Link Download Materi)
+</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr><td>Pertemuan 18 - Augmented Reality</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 17 - Augmented Reality</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 16 - Augmented Reality</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 15 - Augmented Reality</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 14 - Augmented Reality</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 13 - Augmented Reality</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 12 - Augmented Reality</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 11 - Augmented Reality</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 10 - Augmented Reality</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 9 - Augmented Reality</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 8 - Augmented Reality</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 7 - Augmented Reality</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 6 - Augmented Reality</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 5 - Augmented Reality</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 4 - Augmented Reality</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 3 - Augmented Reality</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 2 - Augmented Reality</td><td class="tanggal">2026</td></tr>
+<tr><td><a href="#">Pertemuan 1 - Augmented Reality</a></td><td class="tanggal">2026</td></tr>
+
+</tbody>
+</table>
+</div>
+
+<!-- Secure Programming -->
+<div id="SP" class="kelas-content">
+<table class="download-list">
+<thead>
+<tr>
+<th colspan="2">
+Secure Programming (Link Download Materi)
+</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr><td>Pertemuan 18 - Secure Programming</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 17 - Secure Programming</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 16 - Secure Programming</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 15 - Secure Programming</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 14 - Secure Programming</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 13 - Secure Programming</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 12 - Secure Programming</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 11 - Secure Programming</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 10 - Secure Programming</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 9 - Secure Programming</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 8 - Secure Programming</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 7 - Secure Programming</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 6 - Secure Programming</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 5 - Secure Programming</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 4 - Secure Programming</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 3 - Secure Programming</td><td class="tanggal">2026</td></tr>
+<tr><td>Pertemuan 2 - Secure Programming</td><td class="tanggal">2026</td></tr>
+<tr><td><a href="#">Pertemuan 1 - Secure Programming</a></td><td class="tanggal">2026</td></tr>
+
+</tbody>
+</table>
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+<aside>
+
+<div class="widget">
+<h3>Popular Posts</h3>
+<ul class="wag-mmd&dw-links">
+        <li><a href="https://whatsapp.com/channel/0029Vb6wnDV5Ejy1iwhenj1N/494" target="_blank">WA Group MMD dan Desain Web Kelas Pagi</a></li>
+      </ul>
+</div>
+
+<div class="widget">
+<h3>Kontak Dosen Pengampu</h3>
+<p>Rudi Kurniawan (081320720169)</p>
+<p>Rosidin (-)</p>
+<p>Nihayatul Amal (088112421159)</p>
+<p>Irfan Ali (089660388432)</p>
+<p>Khaerul Anam (082130148448)</p>
+<p>Willy Prihartono (081286964186)</p>
+
+</div>
+
+<div class="widget">
+<h3>Kontak Developer</h3>
+<p>Shokhifahtul Jannah/Eva (081393626981)</p>
+</div>
+
+</div>
+
+</aside>
+
+</div>
+
+<footer>
+
+<div class="footer-box">
+    <h3>Link Penting</h3>
+
+    <ul class="important-links">
+        <li><a href="https://siakad.ikmi.ac.id" target="_blank">Siakad</a></li>
+        <li><a href="https://kip-kuliah.kemdiktisaintek.go.id/siswa/auth/login" target="_blank">KIP-K</a></li>
+        <li><a href="https://auth.netacad.com/auth/realms/skillsforall/login-actions/authenticate?client_id=b2e-marketplace" target="_blank">Netacad</a></li>
+        <li><a href="https://academy.oracle.com/pls/f?p=63000:1::::::" target="_blank">Oracle</a></li>
+    </ul>
+</div>
+
+<div class="footer-box">
+<h3>Tentang</h3>
+<p>Untuk arsip dan memudahkan penugasan SEM 5</p>
+</div>
+
+<div class="footer-box">
+<h3>Unggahan Mingguan</h3>
+<ul class="wag-mmd&dw-links">
+        <li><a href="https://whatsapp.com/channel/0029Vb6wnDV5Ejy1iwhenj1N/494" target="_blank">WA Group MMD dan Desain Web Kelas Pagi</a></li>
+      </ul>
+</div>
+
+</footer>
+
+<script>
+function showClass(id,btn){
+
+document.querySelectorAll('.kelas-content').forEach(el=>{
+el.classList.remove('active-content');
+});
+
+document.querySelectorAll('.kelas-btn').forEach(el=>{
+el.classList.remove('active-btn');
+});
+
+document.getElementById(id).classList.add('active-content');
+btn.classList.add('active-btn');
+}
+</script>
+
+<script>
+function showClass(id, btn){
+
+    document
+    .querySelectorAll('.kelas-content')
+    .forEach(el=>{
+        el.classList.remove('active-content');
+    });
+
+    document
+    .querySelectorAll('.kelas-btn')
+    .forEach(el=>{
+        el.classList.remove('active-btn');
+    });
+
+    document
+    .getElementById(id)
+    .classList.add('active-content');
+
+    btn.classList.add('active-btn');
+}
+</script>
+
+</body>
+</html>
